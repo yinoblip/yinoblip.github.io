@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>StreetStyle - Баскетбол и Стритбол</title>
+<style>
+  /* Сброс и базовые стили */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: #eee;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease;
+    scroll-behavior: smooth;
+  }
+  a, button {
+    cursor: pointer;
+  }
+
+  /* Оттенки белого для кнопок и текста */
+  .white-light { color: #f5f5f5; }
+  .white-lighter { color: #fafafa; }
+  .white-dark { color: #ddd; }
+  .white-bg { background-color: #222; }
+  .btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #fafafa, #eaeaea);
+    color: #111;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(255 255 255 / 0.15);
+    transition: background 0.3s ease, color 0.3s ease;
+    user-select: none;
+    min-width: 140px;
+  }
+  .btn:hover {
+    background: linear-gradient(135deg, #fff, #ddd);
+    color: #000;
+  }
+  .btn-dark {
+    background: #111;
+    color: #eee;
+    border: 1.5px solid #eee;
+  }
+  .btn-dark:hover {
+    background: #222;
+  }
+  .btn-secondary {
+    background: #222;
+    color: #eee;
+    border: 1.5px solid #eee;
+    min-width: auto;
+    padding: 10px 18px;
+  }
+  .btn-secondary:hover {
+    background: #333;
+  }
+  .btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+
+  /* Цветовые акценты для кнопок */
+  .btn-accent1 {
+    background: linear-gradient(135deg, #f0f0f0, #dcdcdc);
+    color: #111;
+  }
+  .btn-accent1:hover {
+    background: linear-gradient(135deg, #fff, #e0e0e0);
+  }
+  .btn-accent2 {
+    background: linear-gradient(135deg, #e0e0e0, #c0c0c0);
+    color: #111;
+  }
+  .btn-accent2:hover {
+    background: linear-gradient(135deg, #f5f5f5, #d0d0d0);
+  }
+
+  /* Контейнеры и выравнивание */
+  .centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  h1.main-title {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #fafafa;
+    text-shadow: 0 0 10px #fff;
+    margin-bottom: 30px;
+    user-select: none;
+  }
+  h2.section-title {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    color: #eee;
+  }
+  p {
+    max-width: 700px;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: #ddd;
+  }
+  ul {
+    max-width: 700px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    color: #ccc;
+  }
+  ul li {
+    margin-bottom: 8px;
+  }
+  .btn-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 25px;
+  }
+  .hidden {
+    display: none !important;
+  }
+  /* Верхний правый вопрос */
+  #topRightQuestion {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: #111;
+    border: 1.5px solid #eee;
+    padding: 14px 18px;
+    border-radius: 8px;
+    max-width: 340px;
+    color: #eee;
+    font-size: 0.95rem;
+    box-shadow: 0 0 10px #fff2;
+    user-select: none;
+    z-index: 110;
+  }
+  #topRightQuestion button {
+    margin-top: 12px;
+    background: #eee;
+    color: #111;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    transition: background 0.3s ease;
+    width: 100%;
+  }
+  #topRightQuestion button:hover {
+    background: #ddd;
+  }
+  #topRightQuestion .question-text {
+    margin-bottom: 10px;
+  }
+
+  /* Отзыв и пожелания - кнопка снизу справа */
+  #feedbackBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #111;
+    border: 1.5px solid #eee;
+    padding: 14px 22px;
+    border-radius: 50px;
+    font-size: 1rem;
+    color: #eee;
+    box-shadow: 0 0 15px #fff4;
+    user-select: none;
+    z-index: 110;
+    transition: background 0.3s ease;
+  }
+  #feedbackBtn:hover {
+    background: #222;
+  }
+
+  /* Модальные окна */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 150;
+  }
+  .modal {
+    background: #111;
+    border-radius: 12px;
+    max-width: 600px;
+    padding: 30px 35px;
+    box-shadow: 0 0 25px #fff8;
+    color: #eee;
+    font-size: 1.1rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    user-select: text;
+    text-align: center;
+  }
+  .modal h3 {
+    margin-top: 0;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  .modal p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+  .modal button.close-btn {
+    margin-top: 15px;
+    background: #eee;
+    color: #111;
+    font-weight: 700;
+    padding: 12px 22px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    min-width: 140px;
+  }
+  .modal button.close-btn:hover {
+    background: #ddd;
+  }
+  .modal .btn-group {
+    justify-content: center;
+  }
+
+  /* Ошибка при сдаче */
+  #quitErrorMessage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #330000;
+    border: 2px solid #ff4444;
+    color: #ff6666;
+    padding: 30px 40px;
+    border-radius: 12px;
+    max-width: 500px;
+    font-size: 1.2rem;
+    box-shadow: 0 0 20px #ff4444;
+    z-index: 200;
+    text-align: center;
+    user-select: none;
+  }
+  #quitErrorMessage p {
+    margin-bottom: 20px;
+  }
+  #quitErrorMessage button {
+    background: #ff4444;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  #quitErrorMessage button:hover {
+    background: #ff2222;
+  }
+
+  /* Эффект наклона за курсором */
+  #appContainer {
+    perspective: 1200px;
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+  }
+
+  /* Стили для теста и игры */
+  #testContent, #gameContent {
+    background: #111;
+    border-radius: 12px;
+    padding: 25px 30px;
+    box-shadow: 0 0 20px #fff8;
+    color: #eee;
+    font-size: 1.1rem;
+    max-height: 480px;
+    overflow-y: auto;
+    user-select: none;
+  }
+
+  .question-block {
+    margin-bottom: 25px;
+    text-align: left;
+  }
+  .question-block h4 {
+    margin-bottom: 18px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #fafafa;
+  }
+  .question-block p {
+    margin-bottom: 20px;
+  }
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .answers button {
+    background: #222;
+    color: #eee;
+    border: 2px solid transparent;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    text-align: left;
+    user-select: none;
+  }
+  .answers button:hover {
+    background: #333;
+  }
+  .answers button.selected {
+    background: #fafafa;
+    color: #111;
+    border-color: #fff;
+  }
+
+  /* Кнопки управления тестом/игрой - изменено расположение и добавлен пробел */
+  .test-game-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #testNextBtn, #gameNextBtn {
+    background: #fafafa;
+    color: #111;
+    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(255 255 255 / 0.3);
+    transition: background 0.3s ease;
+    user-select: none;
+    min-width: 140px;
+  }
+  #testNextBtn:disabled, #gameNextBtn:disabled {
+    background: #888;
+    cursor: not-allowed;
+  }
+  #testNextBtn:hover:not(:disabled), #gameNextBtn:hover:not(:disabled) {
+    background: #fff;
+  }
+  #testRestartBtn, #gameRestartBtn {
+    margin-top: 15px;
+    background: #222;
+    color: #eee;
+    border: 2px solid #eee;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 0 10px #fff8;
+    min-width: 140px;
+  }
+  #testRestartBtn:hover, #gameRestartBtn:hover {
+    background: #333;
+  }
+
+  .result-title {
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #fafafa;
+  }
+  .result-text {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #ddd;
+  }
+
+  /* Навигация главной страницы */
+  #mainMenu .btn {
+    min-width: 180px;
+  }
+
+  /* Ссылки в тексте */
+  a {
+    color: #fafafa;
+    text-decoration: underline;
+  }
+  a:hover {
+    color: #fff;
+  }
+
+  /* Подвал */
+  footer {
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 0.9rem;
+    color: #bbb;
+    user-select: none;
+  }
+  footer span {
+    font-weight: 700;
+    color: #eee;
+  }
+
+  /* Новый раздел Стритбол */
+  #streetballSection {
+    padding: 30px;
+    max-width: 900px;
+    margin: auto;
+    text-align: left;
+    color: #ddd;
+  }
+  #streetballSection h2 {
+    color: #fafafa;
+    margin-bottom: 20px;
+  }
+  #streetballSection p {
+    margin-bottom: 15px;
+  }
+  #streetballSection ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    color: #ccc;
+  }
+  #streetballSection ul li {
+    margin-bottom: 8px;
+  }
+
+  /* Главное меню кнопка */
+  .btn-main-menu {
+    margin-top: 25px;
+    background: #111;
+    border: 1.5px solid #eee;
+    color: #eee;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #fff8;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    min-width: 160px;
+  }
+  .btn-main-menu:hover {
+    background: #222;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="appContainer">
+
+  <!-- Экран приветствия -->
+  <section id="welcomeScreen" class="centered">
+    <h1 class="main-title">StreetStyle</h1>
+    <div class="btn-group" style="gap:20px;">
+      <button id="startBtn" class="btn btn-accent1">Давай начнем</button>
+      <button id="openStreetballBtn" class="btn btn-accent2">О стритболе</button>
+    </div>
+  </section>
+
+  <!-- Экран выбора новичок? -->
+  <section id="newbieQuestion" class="centered hidden">
+    <h2 class="section-title">Вы новичок?</h2>
+    <div class="btn-group">
+      <button id="newbieYes" class="btn">Да</button>
+      <button id="newbieNo" class="btn">Нет</button>
+    </div>
+  </section>
+
+  <!-- Главная страница с выбором -->
+  <section id="mainMenu" class="centered hidden">
+    <h2 class="section-title">Куда хотите пойти?</h2>
+    <div class="btn-group">
+      <button id="branch1" class="btn">История баскетбола</button>
+      <button id="branch2" class="btn">Тест по баскетболу</button>
+      <button id="branch3" class="btn">Мини-игра: Роль в команде</button>
+      <button id="branchStreetball" class="btn">О стритболе</button>
+    </div>
+    <button id="btnMainMenuFromMain" class="btn-main-menu hidden">Главное меню</button>
+  </section>
+
+  <!-- Раздел 1: История баскетбола -->
+  <section id="historySection" class="centered hidden" style="padding: 30px; max-width: 900px; margin: auto; text-align: left;">
+    <h2 class="section-title">История баскетбола</h2>
+    <p>
+      Баскетбол был изобретён в 1891 году канадским преподавателем Джеймсом Нейсмитом, который искал способ поддержать своих учеников в зимний период.  
+      Вскоре игра стала популярной по всему миру, превратившись в один из самых динамичных и зрелищных видов спорта.
+    </p>
+    <p>
+      Правила баскетбола просты: две команды по пять игроков стараются забросить мяч в корзину соперника. Игра требует скорости, точности и командного взаимодействия.
+    </p>
+    <p>
+      В России баскетбол начал развиваться в 1920-х годах. Среди легендарных игроков выделяются Сергей Белов - первый советский игрок, включённый в Зал славы баскетбола, и Андрей Кириленко - звезда НБА.
+    </p>
+    <p>
+      Интересные факты:
+      <ul>
+        <li>Первый официальный матч прошёл 21 декабря 1891 года.</li>
+        <li>Баскетбол - олимпийский вид спорта с 1936 года.</li>
+        <li>Майкл Джордан считается одним из величайших игроков всех времён.</li>
+      </ul>
+    </p>
+    <div style="display:flex; justify-content: space-between; max-width: 900px; margin-top: 20px;">
+      <button class="btn" id="backToMenuFromHistory">Назад</button>
+      <button class="btn-main-menu" id="btnMainMenuFromHistory">Главное меню</button>
+    </div>
+  </section>
+
+  <!-- Раздел 2: Тест -->
+  <section id="testSection" class="centered hidden" style="max-width: 700px; margin: auto; text-align: center; padding: 20px;">
+    <h2 class="section-title">Тест по баскетболу</h2>
+    <div id="testContent"></div>
+    <div class="test-game-controls">
+      <button class="btn btn-secondary" id="backToMenuFromTest">Назад</button>
+      <button class="btn" id="testNextBtn" disabled>Далее</button>
+    </div>
+    <button class="btn btn-secondary hidden" id="testRestartBtn">Пройти тест заново</button>
+    <button class="btn-main-menu hidden" id="btnMainMenuFromTest">Главное меню</button>
+  </section>
+
+  <!-- Раздел 3: Мини-игра - Роль в команде -->
+  <section id="gameSection" class="centered hidden" style="max-width: 700px; margin: auto; text-align: center; padding: 20px;">
+    <h2 class="section-title">Мини-игра: Определи свою роль в команде</h2>
+    <div id="gameContent"></div>
+    <div class="test-game-controls">
+      <button class="btn btn-secondary" id="backToMenuFromGame">Назад</button>
+      <button class="btn" id="gameNextBtn" disabled>Далее</button>
+    </div>
+    <button class="btn btn-secondary hidden" id="gameRestartBtn">Пройти заново</button>
+    <button class="btn-main-menu hidden" id="btnMainMenuFromGame">Главное меню</button>
+  </section>
+
+  <!-- Раздел 4: Стритбол -->
+  <section id="streetballSection" class="hidden" style="max-width: 900px; margin: auto;">
+    <h2>О стритболе</h2>
+    <p>
+      Стритбол - это разновидность баскетбола, которая зародилась на улицах городов и площадках без официальных правил и ограничений.  
+      Это свободная, динамичная и творческая игра, где важны не только техника и физическая подготовка, но и индивидуальный стиль, импровизация и командный дух.
+    </p>
+    <p>
+      История стритбола уходит корнями в 1950-60-е годы, когда молодёжь Нью-Йорка и других мегаполисов начала играть в баскетбол прямо на улицах, создавая собственные правила и традиции.
+    </p>
+    <p>
+      Интересные факты о стритболе:
+      <ul>
+        <li>Стритбол часто играется на половине стандартной баскетбольной площадки, обычно 3 на 3.</li>
+        <li>В стритболе нет судей, игроки сами решают спорные ситуации, что развивает честность и уважение.</li>
+        <li>Многие звёзды НБА начинали именно со стритбола, где развивали свои уникальные навыки и стиль.</li>
+        <li>Стритбол - это не только спорт, но и культура: музыка, мода, граффити и уличное искусство тесно связаны с этим видом игры.</li>
+      </ul>
+    </p>
+    <p>
+      Сегодня стритбол популярен во всём мире, проводятся международные турниры и фестивали, объединяющие людей разных возрастов и национальностей.
+    </p>
+    <div style="display:flex; justify-content: space-between; max-width: 900px; margin-top: 20px;">
+      <button class="btn" id="backToMenuFromStreetball">Назад</button>
+      <button class="btn-main-menu" id="btnMainMenuFromStreetball">Главное меню</button>
+    </div>
+  </section>
+
+  <!-- Экран с советами (после отказа сдаться) -->
+  <section id="motivationSection" class="centered hidden" style="max-width: 700px; margin: auto; text-align: center; padding: 20px; overflow-y:auto; max-height: 80vh;">
+    <h2 class="section-title">Советы для успеха в баскетболе</h2>
+    <div id="motivationContent" style="max-width:700px; text-align:left; color:#ddd;">
+      <p>
+        Легендарные игроки не достигли успеха за один день. Их путь - это упорные тренировки, вера в себя и постоянное желание расти.  
+        Никогда не сдавайтесь, даже если кажется, что всё сложно. Каждый бросок, каждая тренировка приближает вас к мечте.
+      </p>
+      <p>
+        Помните: успех - результат настойчивости и любви к игре.  
+        Ставьте цели, работайте над собой и вдохновляйтесь великими!
+      </p>
+    </div>
+    <button class="btn" id="backToMenuFromMotivation">Вернуться в меню</button>
+  </section>
+
+  <!-- Модальное окно с вопросом "Нет желания играть?" -->
+  <div id="quitModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>Нет желания играть?</h3>
+      <p>
+        Легендарные баскетболисты никогда не сдавались, потому что знали: путь к успеху - это постоянство, дисциплина и вера в себя.  
+        Они падали, вставали и шли дальше, несмотря на трудности и поражения.
+      </p>
+      <p>Решили сдаться?</p>
+      <div class="btn-group" style="gap: 25px; margin-top: 15px;">
+        <button id="quitYes" class="btn btn-secondary btn-small">Да, сдаюсь</button>
+        <button id="quitNo" class="btn btn-secondary btn-small">Нет, я продолжаю</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ошибка при сдаче -->
+  <div id="quitErrorMessage" class="hidden">
+    <p><strong>Ошибка:</strong> Сдаваться - значит остановиться на полпути. Истинная сила - в продолжении, даже когда трудно.</p>
+    <p>«Самый важный разговор - это тот, который ты ведёшь с самим собой.»<br>– Дэвид Гоггинс</p>
+    <button id="closeQuitErrorBtn">Понял, продолжу</button>
+  </div>
+
+  <!-- Модальное окно с цитатой (при отказе играть) -->
+  <div id="quoteModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>Цитата от Дэвида Гоггинса</h3>
+      <p>
+        «Самый важный разговор - это тот, который ты ведёшь с самим собой.»<br><br>
+        - Дэвид Гоггинс
+      </p>
+      <button id="quoteCloseBtn" class="close-btn">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно с отзывами и пожеланиями -->
+  <div id="feedbackModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>Отзыв и пожелания</h3>
+      <textarea id="feedbackText" rows="6" style="width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; resize: vertical;" placeholder="Ваш отзыв или пожелание..."></textarea>
+      <button id="submitFeedback" class="btn" style="margin-top: 15px;">Отправить</button>
+      <button id="closeFeedback" class="close-btn" style="margin-top: 10px;">Закрыть</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Верхний правый блок с вопросом -->
+<div id="topRightQuestion">
+  <div class="question-text">Нет желания играть?</div>
+  <button id="openQuitModalBtn">Узнать, почему легендарные не сдавались</button>
+</div>
+
+<!-- Кнопка отзывов снизу справа -->
+<button id="feedbackBtn" title="Оставить отзыв и пожелания">Отзыв и пожелания</button>
+
+<footer>
+  <p>Project created by <span>Balasnikov Alexey</span></p>
+</footer>
+
+<script>
+  // Эффект наклона за курсором мыши
+  const appContainer = document.getElementById('appContainer');
+  document.addEventListener('mousemove', e => {
+    const x = e.clientX / window.innerWidth - 0.5;
+    const y = e.clientY / window.innerHeight - 0.5;
+    const maxTilt = 10; // градусов
+    appContainer.style.transform = `rotateX(${y * maxTilt}deg) rotateY(${x * maxTilt}deg)`;
+  });
+
+  // Элементы
+  const welcomeScreen = document.getElementById('welcomeScreen');
+  const startBtn = document.getElementById('startBtn');
+  const openStreetballBtn = document.getElementById('openStreetballBtn');
+
+  const newbieQuestion = document.getElementById('newbieQuestion');
+  const newbieYes = document.getElementById('newbieYes');
+  const newbieNo = document.getElementById('newbieNo');
+
+  const mainMenu = document.getElementById('mainMenu');
+  const branch1Btn = document.getElementById('branch1');
+  const branch2Btn = document.getElementById('branch2');
+  const branch3Btn = document.getElementById('branch3');
+  const branchStreetballBtn = document.getElementById('branchStreetball');
+  const btnMainMenuFromMain = document.getElementById('btnMainMenuFromMain');
+
+  const historySection = document.getElementById('historySection');
+  const backToMenuFromHistory = document.getElementById('backToMenuFromHistory');
+  const btnMainMenuFromHistory = document.getElementById('btnMainMenuFromHistory');
+
+  const testSection = document.getElementById('testSection');
+  const testContent = document.getElementById('testContent');
+  const testNextBtn = document.getElementById('testNextBtn');
+  const testRestartBtn = document.getElementById('testRestartBtn');
+  const backToMenuFromTest = document.getElementById('backToMenuFromTest');
+  const btnMainMenuFromTest = document.getElementById('btnMainMenuFromTest');
+
+  const gameSection = document.getElementById('gameSection');
+  const gameContent = document.getElementById('gameContent');
+  const gameNextBtn = document.getElementById('gameNextBtn');
+  const gameRestartBtn = document.getElementById('gameRestartBtn');
+  const backToMenuFromGame = document.getElementById('backToMenuFromGame');
+  const btnMainMenuFromGame = document.getElementById('btnMainMenuFromGame');
+
+  const streetballSection = document.getElementById('streetballSection');
+  const backToMenuFromStreetball = document.getElementById('backToMenuFromStreetball');
+  const btnMainMenuFromStreetball = document.getElementById('btnMainMenuFromStreetball');
+
+  const motivationSection = document.getElementById('motivationSection');
+  const backToMenuFromMotivation = document.getElementById('backToMenuFromMotivation');
+
+  const quitModal = document.getElementById('quitModal');
+  const openQuitModalBtn = document.getElementById('openQuitModalBtn');
+  const quitYes = document.getElementById('quitYes');
+  const quitNo = document.getElementById('quitNo');
+
+  const quitErrorMessage = document.getElementById('quitErrorMessage');
+  const closeQuitErrorBtn = document.getElementById('closeQuitErrorBtn');
+
+  const quoteModal = document.getElementById('quoteModal');
+  const quoteCloseBtn = document.getElementById('quoteCloseBtn');
+
+  const feedbackBtn = document.getElementById('feedbackBtn');
+  const feedbackModal = document.getElementById('feedbackModal');
+  const closeFeedback = document.getElementById('closeFeedback');
+  const submitFeedback = document.getElementById('submitFeedback');
+  const feedbackText = document.getElementById('feedbackText');
+
+  // Функция скрыть все экраны
+  function hideAllSections() {
+    welcomeScreen.classList.add('hidden');
+    newbieQuestion.classList.add('hidden');
+    mainMenu.classList.add('hidden');
+    historySection.classList.add('hidden');
+    testSection.classList.add('hidden');
+    gameSection.classList.add('hidden');
+    motivationSection.classList.add('hidden');
+    streetballSection.classList.add('hidden');
+    quitModal.classList.add('hidden');
+    quoteModal.classList.add('hidden');
+    feedbackModal.classList.add('hidden');
+    quitErrorMessage.classList.add('hidden');
+  }
+
+  // Функция показать главное меню (с кнопкой "Главное меню" скрыть)
+  function showMainMenu() {
+    hideAllSections();
+    mainMenu.classList.remove('hidden');
+    btnMainMenuFromMain.classList.add('hidden');
+  }
+
+  // Старт
+  startBtn.addEventListener('click', () => {
+    hideAllSections();
+    newbieQuestion.classList.remove('hidden');
+  });
+
+  // Кнопка "О стритболе" на стартовом экране
+  openStreetballBtn.addEventListener('click', () => {
+    hideAllSections();
+    streetballSection.classList.remove('hidden');
+  });
+
+  // Новичок - да
+  newbieYes.addEventListener('click', () => {
+    hideAllSections();
+    historySection.classList.remove('hidden');
+  });
+
+  // Новичок - нет
+  newbieNo.addEventListener('click', () => {
+    showMainMenu();
+  });
+
+  // Назад из истории
+  backToMenuFromHistory.addEventListener('click', showMainMenu);
+  btnMainMenuFromHistory.addEventListener('click', () => {
+    hideAllSections();
+    welcomeScreen.classList.remove('hidden');
+  });
+
+  // Назад из теста
+  backToMenuFromTest.addEventListener('click', showMainMenu);
+  btnMainMenuFromTest.addEventListener('click', () => {
+    hideAllSections();
+    welcomeScreen.classList.remove('hidden');
+  });
+
+  // Назад из игры
+  backToMenuFromGame.addEventListener('click', showMainMenu);
+  btnMainMenuFromGame.addEventListener('click', () => {
+    hideAllSections();
+    welcomeScreen.classList.remove('hidden');
+  });
+
+  // Назад из мотивации
+  backToMenuFromMotivation.addEventListener('click', showMainMenu);
+
+  // Назад из стритбола
+  backToMenuFromStreetball.addEventListener('click', showMainMenu);
+  btnMainMenuFromStreetball.addEventListener('click', () => {
+    hideAllSections();
+    welcomeScreen.classList.remove('hidden');
+  });
+
+  // Переходы из главного меню
+  branch1Btn.addEventListener('click', () => {
+    hideAllSections();
+    historySection.classList.remove('hidden');
+    btnMainMenuFromMain.classList.remove('hidden');
+  });
+
+  branch2Btn.addEventListener('click', () => {
+    hideAllSections();
+    testSection.classList.remove('hidden');
+    btnMainMenuFromMain.classList.remove('hidden');
+    startTest();
+  });
+
+  branch3Btn.addEventListener('click', () => {
+    hideAllSections();
+    gameSection.classList.remove('hidden');
+    btnMainMenuFromMain.classList.remove('hidden');
+    startGame();
+  });
+
+  branchStreetballBtn.addEventListener('click', () => {
+    hideAllSections();
+    streetballSection.classList.remove('hidden');
+    btnMainMenuFromMain.classList.remove('hidden');
+  });
+
+  // --- Тест по баскетболу ---
+  const testQuestions = [
+    { question: "Сколько игроков в баскетбольной команде на площадке?", answers: ["5", "7", "6", "4"], correct: 0 },
+    { question: "Как называется мяч для баскетбола?", answers: ["Футбольный мяч", "Баскетбольный мяч", "Волейбольный мяч", "Теннисный мяч"], correct: 1 },
+    { question: "Сколько очков даётся за бросок из-за трёхочковой линии?", answers: ["2", "3", "1", "4"], correct: 1 },
+    { question: "Кто из российских баскетболистов был знаменит в НБА?", answers: ["Андрей Кириленко", "Сергей Белов", "Вячеслав Зайцев", "Павел Буре"], correct: 0 },
+    { question: "В каком году баскетбол впервые появился на Олимпийских играх?", answers: ["1936", "1924", "1948", "1952"], correct: 0 },
+    { question: "Какой термин означает передачу мяча партнеру?", answers: ["Дриблинг", "Пас", "Блок", "Фол"], correct: 1 }
+  ];
+
+  let testCurrentIndex = 0;
+  let testCorrectCount = 0;
+  let testSelectedAnswer = null;
+
+  function startTest() {
+    testCurrentIndex = 0;
+    testCorrectCount = 0;
+    testSelectedAnswer = null;
+    testNextBtn.disabled = true;
+    testNextBtn.classList.remove('hidden');
+    testRestartBtn.classList.add('hidden');
+    btnMainMenuFromTest.classList.remove('hidden');
+    backToMenuFromTest.disabled = false;
+    renderTestQuestion();
+  }
+
+  function renderTestQuestion() {
+    testSelectedAnswer = null;
+    testNextBtn.disabled = true;
+    const q = testQuestions[testCurrentIndex];
+    let html = `<div class="question-block"><h4>Вопрос ${testCurrentIndex + 1} из ${testQuestions.length}:</h4><p>${q.question}</p><div class="answers">`;
+    q.answers.forEach((ans, i) => {
+      html += `<button data-index="${i}">${ans}</button>`;
+    });
+    html += '</div></div>';
+    testContent.innerHTML = html;
+
+    const answerButtons = testContent.querySelectorAll('button[data-index]');
+    answerButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        answerButtons.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        testSelectedAnswer = +btn.getAttribute('data-index');
+        testNextBtn.disabled = false;
+      });
+    });
+  }
+
+  testNextBtn.addEventListener('click', () => {
+    if (testSelectedAnswer === null) return;
+    if (testSelectedAnswer === testQuestions[testCurrentIndex].correct) {
+      testCorrectCount++;
+    }
+    testCurrentIndex++;
+    if (testCurrentIndex < testQuestions.length) {
+      renderTestQuestion();
+    } else {
+      showTestResult();
+    }
+  });
+
+  function showTestResult() {
+    testNextBtn.classList.add('hidden');
+    testRestartBtn.classList.remove('hidden');
+    backToMenuFromTest.disabled = true;
+
+    let title = '';
+    if (testCorrectCount <= 2) title = 'Новичок';
+    else if (testCorrectCount <= 4) title = 'Средний уровень';
+    else title = 'Эксперт';
+
+    testContent.innerHTML = `
+      <div class="result-title">Результат теста: ${title}</div>
+      <div class="result-text">Вы ответили правильно на ${testCorrectCount} из ${testQuestions.length} вопросов.</div>
+      <div class="result-text" style="margin-top: 20px;">
+        Рекомендуем вернуться в раздел <button class="btn btn-dark btn-small" id="goToHistoryFromTest">«История баскетбола»</button> для лучшего ознакомления.
+      </div>
+    `;
+
+    document.getElementById('goToHistoryFromTest').addEventListener('click', () => {
+      hideAllSections();
+      historySection.classList.remove('hidden');
+    });
+  }
+
+  testRestartBtn.addEventListener('click', () => {
+    startTest();
+  });
+
+  // --- Мини-игра: Роль в команде ---
+  const gameQuestions = [
+    { question: "Какой у вас рост?", answers: ["Ниже 170 см", "170-185 см", "185-200 см", "Выше 200 см"], scores: [1, 2, 3, 4] },
+    { question: "Какой у вас стиль игры?", answers: ["Атакующий", "Защитный", "Универсальный", "Резервный"], scores: [3, 2, 4, 1] },
+    { question: "Как вы относитесь к командной работе?", answers: ["Очень люблю", "Предпочитаю индивидуально", "Зависит от ситуации", "Не люблю"], scores: [4, 1, 3, 1] },
+    { question: "Какой ваш любимый бросок?", answers: ["Дальние броски", "Броски вблизи", "Передачи", "Блоки и перехваты"], scores: [3, 4, 2, 3] },
+    { question: "Как часто вы тренируетесь?", answers: ["Каждый день", "Несколько раз в неделю", "Раз в неделю", "Редко"], scores: [4, 3, 2, 1] },
+    { question: "Как вы относитесь к лидерству?", answers: ["Люблю быть капитаном", "Предпочитаю слушать", "Зависит от команды", "Не люблю"], scores: [4, 2, 3, 1] },
+    { question: "Как вы реагируете на поражения?", answers: ["Учусь на ошибках", "Расстраиваюсь", "Быстро забываю", "Стараюсь не думать"], scores: [4, 1, 3, 2] },
+    { question: "Какая ваша физическая подготовка?", answers: ["Отличная", "Хорошая", "Средняя", "Плохая"], scores: [4, 3, 2, 1] },
+    { question: "Как вы относитесь к тренировкам на выносливость?", answers: ["Люблю", "Нейтрально", "Не люблю", "Избегаю"], scores: [4, 3, 1, 1] },
+    { question: "Что для вас важнее в баскетболе?", answers: ["Техника", "Сила", "Скорость", "Командная игра"], scores: [3, 3, 3, 4] }
+  ];
+
+  let gameCurrentIndex = 0;
+  let gameScore = 0;
+  let gameSelectedAnswer = null;
+
+  function startGame() {
+    gameCurrentIndex = 0;
+    gameScore = 0;
+    gameSelectedAnswer = null;
+    gameNextBtn.disabled = true;
+    gameNextBtn.classList.remove('hidden');
+    gameRestartBtn.classList.add('hidden');
+    btnMainMenuFromGame.classList.remove('hidden');
+    backToMenuFromGame.disabled = false;
+    renderGameQuestion();
+  }
+
+  function renderGameQuestion() {
+    gameSelectedAnswer = null;
+    gameNextBtn.disabled = true;
+    const q = gameQuestions[gameCurrentIndex];
+    let html = `<div class="question-block"><h4>Вопрос ${gameCurrentIndex + 1} из ${gameQuestions.length}:</h4><p>${q.question}</p><div class="answers">`;
+    q.answers.forEach((ans, i) => {
+      html += `<button data-index="${i}">${ans}</button>`;
+    });
+    html += '</div></div>';
+    gameContent.innerHTML = html;
+
+    const answerButtons = gameContent.querySelectorAll('button[data-index]');
+    answerButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        answerButtons.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        gameSelectedAnswer = +btn.getAttribute('data-index');
+        gameNextBtn.disabled = false;
+      });
+    });
+  }
+
+  gameNextBtn.addEventListener('click', () => {
+    if (gameSelectedAnswer === null) return;
+    gameScore += gameQuestions[gameCurrentIndex].scores[gameSelectedAnswer];
+    gameCurrentIndex++;
+    if (gameCurrentIndex < gameQuestions.length) {
+      renderGameQuestion();
+    } else {
+      showGameResult();
+    }
+  });
+
+  function showGameResult() {
+    gameNextBtn.classList.add('hidden');
+    gameRestartBtn.classList.remove('hidden');
+    backToMenuFromGame.disabled = true;
+
+    let role = '';
+    if (gameScore <= 15) role = 'Защитник';
+    else if (gameScore <= 25) role = 'Разыгрывающий';
+    else if (gameScore <= 35) role = 'Нападающий';
+    else role = 'Лидер команды';
+
+    gameContent.innerHTML = `
+      <div class="result-title">Ваша роль в команде: ${role}</div>
+      <div class="result-text" style="margin-top: 20px;">
+        Спасибо за прохождение мини-игры! Надеемся, вы узнали что-то новое о себе и баскетболе.
+      </div>
+    `;
+  }
+
+  gameRestartBtn.addEventListener('click', () => {
+    startGame();
+  });
+
+  // --- Модальное окно "Нет желания играть?" ---
+  openQuitModalBtn.addEventListener('click', () => {
+    quitModal.classList.remove('hidden');
+  });
+
+  quitYes.addEventListener('click', () => {
+    quitModal.classList.add('hidden');
+    quitErrorMessage.classList.remove('hidden');
+  });
+
+  quitNo.addEventListener('click', () => {
+    quitModal.classList.add('hidden');
+    // Плавно скроллим к советам в мотивационном разделе
+    hideAllSections();
+    motivationSection.classList.remove('hidden');
+    // Прокрутка вниз к содержимому советов
+    setTimeout(() => {
+      const motivationContent = document.getElementById('motivationContent');
+      motivationContent.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  });
+
+  closeQuitErrorBtn.addEventListener('click', () => {
+    quitErrorMessage.classList.add('hidden');
+  });
+
+  quoteCloseBtn.addEventListener('click', () => {
+    quoteModal.classList.add('hidden');
+  });
+
+  // --- Отзыв и пожелания ---
+  feedbackBtn.addEventListener('click', () => {
+    feedbackModal.classList.remove('hidden');
+  });
+
+  closeFeedback.addEventListener('click', () => {
+    feedbackModal.classList.add('hidden');
+  });
+
+  submitFeedback.addEventListener('click', () => {
+    const text = feedbackText.value.trim();
+    if(text.length === 0){
+      alert("Пожалуйста, введите отзыв или пожелание.");
+      return;
+    }
+    alert("Спасибо за ваш отзыв!");
+    feedbackText.value = '';
+    feedbackModal.classList.add('hidden');
+  });
+
+  // Изначально показываем приветственный экран
+  hideAllSections();
+  welcomeScreen.classList.remove('hidden');
+
+</script>
+
+</body>
+</html>
